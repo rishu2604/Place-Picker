@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 
 import Places from './components/Places.jsx';
 import { AVAILABLE_PLACES } from './data.js';
@@ -51,7 +51,8 @@ function App() {
     }
   }
 
-  function handleRemovePlace() {
+  // We should use 'useCallback' hook when passing functions as dependencies in useEffect hook
+  const handleRemovePlace = useCallback(function handleRemovePlace() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
@@ -59,7 +60,7 @@ function App() {
 
     const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
     localStorage.setItem('selectedPlaces', JSON.stringify(storedIds.filter((id)=> id!==selectedPlace.current)))
-  }
+  }, [])
 
   return (
     <>
